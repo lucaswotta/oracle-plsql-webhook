@@ -1,6 +1,6 @@
 # Case: Integração de Webhook com Oracle PL/SQL
 
-Este repositório documenta a solução para um desafio real de negócio: a necessidade de criar um mecanismo de notificação em tempo real entre um sistema ERP Oracle e uma plataforma externa de chatbot. O código aqui presente é uma versão anonimizada implementada em produção.
+Este repositório documenta a solução para um desafio real de negócio: a necessidade de criar um mecanismo de notificação em tempo real entre um sistema ERP Oracle e uma plataforma externa de chatbot. O código aqui se trata de uma versão anonimizada da implementada em produção.
 
 ## O Desafio
 
@@ -37,6 +37,6 @@ Os scripts de instalação estão organizados na pasta `install/` em uma ordem l
 
 ## Nota
 
-Este projeto nasceu de uma necessidade de negócio real e representa uma solução que equilibra e simplicidade, demonstrando como recursos nativos do Oracle Database podem ser usados para construir integrações eficientes.
+Este projeto nasceu de uma necessidade de negócio real e representa uma solução que equilibra boas práticas com simplicidade, demonstrando como recursos nativos do Oracle Database podem ser usados para construir integrações eficientes.
 
 ---
