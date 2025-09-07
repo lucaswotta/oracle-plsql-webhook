@@ -8,7 +8,7 @@ Em um ambiente de ERP com alto volume de transações, a equipe de um chatbot pr
 
 ## A Solução Proposta
 
-Para resolver este desafio, foi desenvolvida uma solução utilizando um **webhook** e recursos nativos do Oracle PL/SQL. Em vez de o sistema externo perguntar "algo mudou?", o próprio banco de dados agora **ativamente notifica** o sistema externo no exato momento em que uma alteração relevante ocorre.
+Para resolver este desafio, foi desenvolvida uma solução utilizando um **webhook** e recursos nativos do Oracle PL/SQL. Em vez de o sistema externo perguntar "algo mudou?", o próprio banco de dados agora **ativamente notifica** o sistema externo no exato momento em que uma alteração ocorra.
 
 ### Como Funciona
 
@@ -20,13 +20,14 @@ O fluxo é contido inteiramente dentro do banco de dados:
     * Constrói uma mensagem de dados estruturada (JSON) contendo o status anterior e o novo, para dar mais contexto ao sistema externo.
     * Realiza a chamada HTTP POST para o endpoint do webhook, enviando a mensagem.
 4.  **A Auditoria (`LOG TABLE`):** Cada tentativa de notificação, seja ela um sucesso ou uma falha, é registrada em uma tabela de log.
+5.  **A Limpeza (`JOB`):** Periodicamente, um job agendado verifica a tabela de log e remove os registros antigos, garantindo a saúde do sistema a longo prazo.
 
 ## Boas Práticas
 
 Durante o desenvolvimento foram adotadas boas práticas para garantir um código limpo e de fácil manutenção:
-- **Código Limpo (DRY):** Uma função privada de tradução foi criada para evitar a repetição do mesmo bloco de código (`Don't Repeat Yourself`).
 - **Nomenclatura:** Foi adotada uma convenção de nomenclatura clara (`p_` para parâmetros, `l_` para variáveis locais, `f_` para funções) para aumentar a legibilidade.
 - **Robustez no Logging:** O uso de `PRAGMA AUTONOMOUS_TRANSACTION` no procedimento de log garante que falhas de rede nunca causem um `ROLLBACK` na operação do usuário do ERP.
+- **Manutenção Automatizada:** A inclusão de um job (`DBMS_SCHEDULER`) para o expurgo automático de logs antigos, garantindo a performance sem intervenção manual.
 
 ## Estrutura
 
@@ -34,9 +35,10 @@ Os scripts de instalação estão organizados na pasta `install/` em uma ordem l
 - `01_create_table.sql`: Cria a tabela de log.
 - `02_create_package.sql`: Cria a package com a lógica principal.
 - `03_create_trigger.sql`: Cria a trigger que monitora os eventos.
+- `04_create_maintenance_job.sql`: Cria um job para a limpeza periódica dos logs.
 
 ## Nota
 
-Este projeto nasceu de uma necessidade de negócio real e representa uma solução que equilibra boas práticas com simplicidade, demonstrando como recursos nativos do Oracle Database podem ser usados para construir integrações eficientes.
+Este projeto nasceu de uma necessidade de negócio real e representa uma solução que equilibra boas práticas com simplicidade, demonstrando como recursos nativos do **Oracle Database** podem ser usados para construir integrações eficientes.
 
 ---
